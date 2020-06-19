@@ -658,11 +658,14 @@ func (e *encoder) maybeWriteITXT(t *TextEntry) {
 		return
 	}
 
-	val, method, err := e.pngCompress([]byte(t.Value))
-	if err != nil {
-		e.err = err
-		return
-	}
+	// 	val, method, err := e.pngCompress([]byte(t.Value))
+	// 	if err != nil {
+	// 		e.err = err
+	// 		return
+	// 	}
+
+	val := t.Value
+	method := 0
 
 	buf := make([]byte, len(t.Key)+len(val)+len(t.LanguageTag)+len(t.TranslatedKey)+5)
 
@@ -676,7 +679,8 @@ func (e *encoder) maybeWriteITXT(t *TextEntry) {
 	// TODO: Check and see if the compressed buffer is smaller than the
 	// original text and choose compressed or uncompressed based on
 	// that.
-	buf[len(t.Key)+1] = 1
+	//buf[len(t.Key)+1] = 1
+	buf[len(t.Key)+1] = 0
 	// Compression method (which is always 0, but whatever)
 	buf[len(t.Key)+2] = byte(method)
 	length := len(t.Key) + 3
